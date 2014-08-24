@@ -1,0 +1,21 @@
+Homework #: 6
+Student Name: Daniel Barton Durbin
+EID: dbd453
+CS login: majisto
+Email address: majisto@gmail.com
+Unique Number: 53780
+
+1: Paging is vulnerable to internal fragmentation, but not external.  Internal is where memory is allocated in a particular size chunk, even if the program will end up using less than the size.  This memory cannot be used with another process, thus it is wasted.  External happens when enough memory is available but all free blocks are too small of a size for another process.  Since paging allocates all the memory, this will not happen.
+
+2: This sounds like a horrible idea.  If the swap space is in main memory, going to disk would be a terribly slow process. I/O is a very expensive operation, and should be avoided at all costs.
+
+3: A page fault occurs when a process attempts to access physical memory that is not currently loaded into physical memory.  This will not cause the process to be terminated like a segmentation fault would.  Instead, the OS will block the process, load the page into memory, and then resume processing.  In the meantime, it usually runs another process.
+
+4: 	*Note: These are assuming we have to fault in all the pages first.
+
+	1: FIFO with 3 pages caused 9 page fault while 4 pages caused 10.
+	
+	2: Optimal used 6 page faults with 4 pages, LRU used 7 page faults, and clock used 7 page faults as well.  This proves that as expected optimal is the best page replacement algorithm, but is practically impossible to implement.  Clock and LRU are both superior to the FIFO system, but it does appear that more pages does help with LRU.  LRU gave 9 page faults with only 3 pages.
+
+5: B D A
+
