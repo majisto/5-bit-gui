@@ -4,7 +4,6 @@
 #include <time.h>
 #include <fstream>
 #include <msclr/marshal.h>
-FILE *input;
 int number_of_chars = 0;
 namespace RandomNumberGenerator 
 {
@@ -40,19 +39,27 @@ namespace RandomNumberGenerator
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::Label^  label2;
-	private: System::Windows::Forms::Label^  label3;
-	private: System::Windows::Forms::Label^  label4;
-	private: System::Windows::Forms::Label^  label5;
-	private: System::Windows::Forms::Label^  label6;
 
-	private: System::Windows::Forms::Button^  button1;
-	private: System::Windows::Forms::Button^  button2;
+
+
+
+
+
+
+
+
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
 	private: System::Windows::Forms::Button^  button3;
 	private: System::Windows::Forms::Button^  button4;
+
+	private: System::Windows::Forms::TextBox^  textBox2;
+	private: System::Windows::Forms::TextBox^  textBox3;
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::Button^  button5;
+	private: System::Windows::Forms::Label^  label3;
+
 	protected: 
 
 	private:
@@ -69,94 +76,18 @@ namespace RandomNumberGenerator
 		void InitializeComponent(void)
 		{
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->label6 = (gcnew System::Windows::Forms::Label());
-			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->button4 = (gcnew System::Windows::Forms::Button());
+			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->button5 = (gcnew System::Windows::Forms::Button());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(167, 37);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(13, 13);
-			this->label1->TabIndex = 0;
-			this->label1->Text = L"0";
-			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(208, 37);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(13, 13);
-			this->label2->TabIndex = 1;
-			this->label2->Text = L"0";
-			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(250, 37);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(13, 13);
-			this->label3->TabIndex = 2;
-			this->label3->Text = L"0";
-			// 
-			// label4
-			// 
-			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(290, 37);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(13, 13);
-			this->label4->TabIndex = 3;
-			this->label4->Text = L"0";
-			// 
-			// label5
-			// 
-			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(334, 37);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(13, 13);
-			this->label5->TabIndex = 4;
-			this->label5->Text = L"0";
-			// 
-			// label6
-			// 
-			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(379, 37);
-			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(13, 13);
-			this->label6->TabIndex = 5;
-			this->label6->Text = L"0";
-			// 
-			// button1
-			// 
-			this->button1->Location = System::Drawing::Point(188, 86);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(75, 23);
-			this->button1->TabIndex = 7;
-			this->button1->Text = L"Generate";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
-			// 
-			// button2
-			// 
-			this->button2->Location = System::Drawing::Point(293, 86);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(75, 23);
-			this->button2->TabIndex = 8;
-			this->button2->Text = L"Reset";
-			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
 			// pictureBox1
 			// 
@@ -176,7 +107,7 @@ namespace RandomNumberGenerator
 			// 
 			// button3
 			// 
-			this->button3->Location = System::Drawing::Point(170, 133);
+			this->button3->Location = System::Drawing::Point(178, 146);
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(75, 23);
 			this->button3->TabIndex = 10;
@@ -186,7 +117,7 @@ namespace RandomNumberGenerator
 			// 
 			// button4
 			// 
-			this->button4->Location = System::Drawing::Point(306, 133);
+			this->button4->Location = System::Drawing::Point(293, 146);
 			this->button4->Name = L"button4";
 			this->button4->Size = System::Drawing::Size(75, 23);
 			this->button4->TabIndex = 11;
@@ -194,23 +125,72 @@ namespace RandomNumberGenerator
 			this->button4->UseVisualStyleBackColor = true;
 			this->button4->Click += gcnew System::EventHandler(this, &MyForm::decryptfile_click);
 			// 
+			// textBox2
+			// 
+			this->textBox2->Location = System::Drawing::Point(226, 41);
+			this->textBox2->Name = L"textBox2";
+			this->textBox2->Size = System::Drawing::Size(100, 20);
+			this->textBox2->TabIndex = 13;
+			// 
+			// textBox3
+			// 
+			this->textBox3->Location = System::Drawing::Point(226, 70);
+			this->textBox3->Name = L"textBox3";
+			this->textBox3->Size = System::Drawing::Size(100, 20);
+			this->textBox3->TabIndex = 15;
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(149, 44);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(71, 13);
+			this->label1->TabIndex = 16;
+			this->label1->Text = L"Lower Range";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(149, 73);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(71, 13);
+			this->label2->TabIndex = 17;
+			this->label2->Text = L"Upper Range";
+			// 
+			// button5
+			// 
+			this->button5->Location = System::Drawing::Point(235, 96);
+			this->button5->Name = L"button5";
+			this->button5->Size = System::Drawing::Size(75, 23);
+			this->button5->TabIndex = 18;
+			this->button5->Text = L"Create";
+			this->button5->UseVisualStyleBackColor = true;
+			this->button5->Click += gcnew System::EventHandler(this, &MyForm::button5_Click);
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(355, 60);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(13, 13);
+			this->label3->TabIndex = 19;
+			this->label3->Text = L"0";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Menu;
 			this->ClientSize = System::Drawing::Size(451, 228);
+			this->Controls->Add(this->label3);
+			this->Controls->Add(this->button5);
+			this->Controls->Add(this->label2);
+			this->Controls->Add(this->label1);
+			this->Controls->Add(this->textBox3);
+			this->Controls->Add(this->textBox2);
 			this->Controls->Add(this->button4);
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->pictureBox1);
-			this->Controls->Add(this->button2);
-			this->Controls->Add(this->button1);
-			this->Controls->Add(this->label6);
-			this->Controls->Add(this->label5);
-			this->Controls->Add(this->label4);
-			this->Controls->Add(this->label3);
-			this->Controls->Add(this->label2);
-			this->Controls->Add(this->label1);
 			this->Name = L"MyForm";
 			this->Text = L"Encryptor";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
@@ -220,42 +200,8 @@ namespace RandomNumberGenerator
 
 		}
 #pragma endregion
-private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		int num[7] = { 0 };
 
-		// seed
-		srand((int) time(0));
-
-		// Randomize the array values.
-		for (int i = 0; i < 6; i++) 
-			num[i] = (rand() % 99) + 1;
-
-		// set the label text with random number
-		this->label1->Text = Convert::ToString(num[0]);
-		this->label2->Text = Convert::ToString(num[1]);
-		this->label3->Text = Convert::ToString(num[2]);
-		this->label4->Text = Convert::ToString(num[3]);
-		this->label5->Text = Convert::ToString(num[4]);
-		this->label6->Text = Convert::ToString(num[5]);
-
-		// change the button states.
-		this->button1->Enabled = false;
-		this->button2->Enabled = true;
-	}
 private: System::Void pictureBox1_Click(System::Object^  sender, System::EventArgs^  e) {
-		 }
-private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) 
-		 {
-			 this->label1->Text = "0";
-			 this->label2->Text = "0";
-			 this->label3->Text = "0";
-			 this->label4->Text = "0";
-			 this->label5->Text = "0";
-			 this->label6->Text = "0";
-
-			 this->button1->Enabled = true;
-			 this->button2->Enabled = false;
 		 }
 private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 		 }
@@ -377,7 +323,6 @@ private: System::Void decryptfile_click(System::Object^  sender, System::EventAr
 				const char* str4 = context->marshal_as<const char*>(b);
 				std::ofstream fout (str4, ios_base::binary);
 				delete context;
-				//std::ofstream fout ("whee", ios_base::binary);
 				System::IO::StreamReader ^ sr = gcnew
 					System::IO::StreamReader(openFileDialog1->FileName);
 				int buffer = 0;
@@ -406,6 +351,38 @@ private: System::Void decryptfile_click(System::Object^  sender, System::EventAr
 				fout.close();
 				sr->Close();
 			 }
+		 }
+
+private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e) 
+		 {
+			 using namespace System::IO;
+			 using namespace std;
+			 String ^ lower = textBox2->Text;
+			 String ^ upper = textBox3->Text;
+			 int low;
+			 int high;
+			 try
+			 {
+				low = System::Convert::ToInt32(lower);
+				high = System::Convert::ToInt32(upper);
+			 }
+			 catch (FormatException^)
+			 {
+				MessageBox::Show("Please only enter an integer.");
+				return;
+			 }
+			 catch (OverflowException^)
+			 {
+				 MessageBox::Show("Overflow.");
+				 return;
+			 }
+			 if (low > high)
+			 {
+				 MessageBox::Show("Higher must be greater than lower.");
+				 return;
+			 }
+			 int random = low + (rand() % (int)(high - low + 1));
+			 this->label3->Text = Convert::ToString(random);
 		 }
 };
 }
