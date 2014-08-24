@@ -305,14 +305,14 @@ private: System::Void openfile_click(System::Object^  sender, System::EventArgs^
 						}
 					}
 				}
-				//if (count > 0)
-				//{
-				//	buffer = buffer << (5-count);
-				//	fivebits = buffer & 0x1F;
-				//	turn_bits(fivebits, &encoded);
-				//	fout << (encoded);
-				//	fout.put('\n');
-				//}
+				if (count > 0)
+				{
+					buffer = buffer << (5-count);
+					fivebits = buffer & 0x1F;
+					turn_bits(fivebits, &encoded);
+					fout << (encoded);
+					fout.put('\n');
+				}
 				if (char_in_line > 60)
 					fout.put('\n');
 				 fs->Close();
@@ -363,9 +363,21 @@ void bit_to_original (int bits, char *s)
 private: System::Void decryptfile_click(System::Object^  sender, System::EventArgs^  e) 
 		 {
 			 using namespace System::IO;
+			 using namespace msclr::interop;
+			 using namespace std;
 			 if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
-			 {
-				std::ofstream fout ("myfile_decrypted", std::ios_base::binary);
+			 { 
+				String^ t = openFileDialog1->FileName;
+				String ^s = t->Replace(".5b","");
+				array<Char>^chars = {'/', '\\'};
+				array<String^>^split = s->Split( chars );
+				String^ a = split[split->Length - 1];
+				String^ b = a->Insert(0,"decrypted_");
+				marshal_context ^ context = gcnew marshal_context();
+				const char* str4 = context->marshal_as<const char*>(b);
+				std::ofstream fout (str4, ios_base::binary);
+				delete context;
+				//std::ofstream fout ("whee", ios_base::binary);
 				System::IO::StreamReader ^ sr = gcnew
 					System::IO::StreamReader(openFileDialog1->FileName);
 				int buffer = 0;
