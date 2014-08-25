@@ -4,7 +4,6 @@
 #include <time.h>
 #include <fstream>
 #include <msclr/marshal.h>
-int number_of_chars = 0;
 namespace RandomNumberGenerator 
 {
 	using namespace System;
@@ -39,15 +38,6 @@ namespace RandomNumberGenerator
 				delete components;
 			}
 		}
-
-
-
-
-
-
-
-
-
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
 	private: System::Windows::Forms::Button^  button3;
@@ -59,6 +49,7 @@ namespace RandomNumberGenerator
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Button^  button5;
 	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::OpenFileDialog^  openFileDialog2;
 
 	protected: 
 
@@ -86,6 +77,7 @@ namespace RandomNumberGenerator
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->button5 = (gcnew System::Windows::Forms::Button());
 			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->openFileDialog2 = (gcnew System::Windows::Forms::OpenFileDialog());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -176,6 +168,12 @@ namespace RandomNumberGenerator
 			this->label3->TabIndex = 19;
 			this->label3->Text = L"0";
 			// 
+			// openFileDialog2
+			// 
+			this->openFileDialog2->FileName = L"openFileDialog2";
+			this->openFileDialog2->Filter = L"5bit Files|*.5b";
+			this->openFileDialog2->Title = L"Select a file to decrypt";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -229,8 +227,6 @@ private: System::Void openfile_click(System::Object^  sender, System::EventArgs^
 				{
 					try {c = r->ReadByte();}
 					catch (...) {break;}
-					//if (c == 0x0D)
-					//	continue;
 					buffer = buffer << 8;
 					buffer = buffer | c;
 					count += 8;
@@ -311,47 +307,68 @@ private: System::Void decryptfile_click(System::Object^  sender, System::EventAr
 			 using namespace System::IO;
 			 using namespace msclr::interop;
 			 using namespace std;
-			 if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
-			 { 
-				String^ t = openFileDialog1->FileName;
-				String ^s = t->Replace(".5b","");
-				array<Char>^chars = {'/', '\\'};
-				array<String^>^split = s->Split( chars );
-				String^ a = split[split->Length - 1];
-				String^ b = a->Insert(0,"decrypted_");
-				marshal_context ^ context = gcnew marshal_context();
-				const char* str4 = context->marshal_as<const char*>(b);
-				std::ofstream fout (str4, ios_base::binary);
-				delete context;
-				System::IO::StreamReader ^ sr = gcnew
-					System::IO::StreamReader(openFileDialog1->FileName);
-				int buffer = 0;
-				int eightbits = 0;
-				int c = 0; 
-				int count = 0;
-				char decoded = 0;
-				while ((c = sr->Read()) != EOF)
+			 if (openFileDialog2->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+			 {
+				String ^ new_path = openFileDialog2->FileName->Replace(".5b","");
+				if (File::Exists(new_path))
 				{
-					if ((c > 0x40 && c < 0x5B) || (c > 0x2F && c < 0x36))
-					{
-						bit_to_original(c,&decoded);
-						buffer = (buffer << 5) | (decoded);
-						count += 5;
-						while (count >= 8)
-						{
-							eightbits = buffer & (0xFF << (count - 8));
-							eightbits = eightbits >> (count - 8);
-							count -= 8;
-							buffer = buffer << (32 - (count - 8));
-							buffer = logicalShift(buffer, (32 - (count - 8)));
-							fout.put((eightbits & 0xFF));
-						}
-					}
+					String^ t = openFileDialog2->FileName;
+					String ^s = t->Replace(".5b","");
+					array<Char>^chars = {'/', '\\'};
+					array<String^>^split = s->Split( chars );
+					String^ a = split[split->Length - 1];
+					String^ b = a->Insert(0,"decrypted_");
+					marshal_context ^ context = gcnew marshal_context();
+					const char* str4 = context->marshal_as<const char*>(b);
+					std::ofstream fout (str4, ios_base::binary);
+					delete context;
+					System::IO::StreamReader ^ sr = gcnew
+						System::IO::StreamReader(openFileDialog2->FileName);
+					decrypt(fout, sr);
 				}
-				fout.close();
-				sr->Close();
+				else
+				{
+					String^ t = openFileDialog2->FileName;
+					String ^s = t->Replace(".5b","");
+					marshal_context ^ context = gcnew marshal_context();
+					const char* str4 = context->marshal_as<const char*>(s);
+					std::ofstream fout (str4, ios_base::binary);
+					delete context;
+					System::IO::StreamReader ^ sr = gcnew
+						System::IO::StreamReader(openFileDialog2->FileName);
+					decrypt(fout, sr);
+				}
 			 }
 		 }
+
+void decrypt (std::ofstream & fout, System::IO::StreamReader ^ & sr)
+{
+	int buffer = 0;
+	int eightbits = 0;
+	int c = 0; 
+	int count = 0;
+	char decoded = 0;
+	while ((c = sr->Read()) != EOF)
+	{
+		if ((c > 0x40 && c < 0x5B) || (c > 0x2F && c < 0x36))
+		{
+			bit_to_original(c,&decoded);
+			buffer = (buffer << 5) | (decoded);
+			count += 5;
+			while (count >= 8)
+			{
+				eightbits = buffer & (0xFF << (count - 8));
+				eightbits = eightbits >> (count - 8);
+				count -= 8;
+				buffer = buffer << (32 - (count - 8));
+				buffer = logicalShift(buffer, (32 - (count - 8)));
+				fout.put((eightbits & 0xFF));
+			}
+		}
+	}
+	fout.close();
+	sr->Close();
+}
 
 private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e) 
 		 {
